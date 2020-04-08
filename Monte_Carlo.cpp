@@ -1,6 +1,6 @@
 #include "headers.h"
 
-Monte_Carlo :: Monte_Carlo(function<vector<int> (int, int)> generate_random_numbers)
+Monte_Carlo :: Monte_Carlo(function<vector<long long> (int, int)> generate_random_numbers)
 {
     random_num_gen = generate_random_numbers;
 }
@@ -12,21 +12,27 @@ double Monte_Carlo :: get_dist(pair<double, double> pt1, pair<double, double> pt
     return sqrt(dist);
 }
 
+double Monte_Carlo :: convert_to_range(long long number, pair<int, int> range, int precision)
+{
+    int mod = precision * (range.second - range.first) + 1;
+    number = (number % mod) + (precision * range.first);
+    return (double)number / (double)precision;
+}
+
 double Monte_Carlo :: generate_pi()
 {
     pair<int, int> range = make_pair(-1,1);
     int seed = 7;
-    int count = 10000;
-    int precision = 10000;
-    vector<int> x_cor = random_num_gen(count, seed);
-    vector<int> y_cor = random_num_gen(count, seed);
+    int count = 100000;
+    int precision = 100000;
+    vector<long long> pts = random_num_gen(2*count, seed);
+    pair<double, double> circle_center = make_pair(0, 0);
 
     int count_inside_circle = 0;
-    pair<double, double> circle_center = make_pair(0, 0);
-    for(int i=0;i<count;i++)
+    for(int i=0;i<2*count;i+=2)
     {
-        double x = convert_to_range(x_cor[i], range, precision);
-        double y = convert_to_range(y_cor[i], range, precision);
+        double x = convert_to_range(pts[i], range, precision);
+        double y = convert_to_range(pts[i+1], range, precision);
         pair<double, double> random_pt = make_pair(x, y);
         double dist = get_dist(circle_center, random_pt);
         if(dist <= 1)

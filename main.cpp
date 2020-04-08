@@ -27,7 +27,7 @@ int main( int argc, char **argv ) {
     int x;
     cin>>x;
 
-    function < vector<int> (int, int) > generate_random_numbers;
+    function < vector<long long> (int, int) > generate_random_numbers;
 
     if(x == 0)
     {

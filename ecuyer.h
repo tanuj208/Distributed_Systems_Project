@@ -24,7 +24,7 @@ private:
 public:
 	int num_procs;
 	Ecuyer(int number_of_processes);
-	vector<int> generate_random_numbers(int count, int seed);
+	vector<long long> generate_random_numbers(int count, int seed);
 };
 
 #endif

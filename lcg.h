@@ -10,7 +10,7 @@ private:
 	int a = 2147483629;
 	int b = 2147483587;
 public:
-	vector<int> generate_random_numbers(int count, int seed);
+	vector<long long> generate_random_numbers(int count, int seed);
 };
 
 #endif

@@ -5,9 +5,9 @@ LCG_Parallel2 :: LCG_Parallel2(int number_of_processes)
 	num_procs = number_of_processes;	
 }
 
-vector<int> LCG_Parallel2 :: generate_random_numbers(int count, int seed)
+vector<long long> LCG_Parallel2 :: generate_random_numbers(int count, int seed)
 {
 	cout<<"Method 2"<<endl;
-	vector<int> tmp;
+	vector<long long> tmp;
 	return tmp;
 }
