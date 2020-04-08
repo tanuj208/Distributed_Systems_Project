@@ -11,7 +11,7 @@ private:
 public:
 	int num_procs;
 	LCG_Parallel3(int number_of_processes);
-	vector<int> generate_random_numbers(int count, int seed, pair<int, int> range);
+	vector<double> generate_random_numbers(int count, int seed, pair<int, int> range);
 };
 
 #endif
