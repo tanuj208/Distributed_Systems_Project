@@ -1,6 +1,6 @@
 #include "headers.h"
 
-Monte_Carlo :: Monte_Carlo(function<vector<double> (int, int, pair<int, int>)> generate_random_numbers)
+Monte_Carlo :: Monte_Carlo(function<vector<int> (int, int)> generate_random_numbers)
 {
     random_num_gen = generate_random_numbers;
 }
@@ -17,14 +17,17 @@ double Monte_Carlo :: generate_pi()
     pair<int, int> range = make_pair(-1,1);
     int seed = 7;
     int count = 10000;
-    vector<double> x_cor = random_num_gen(count, seed, range);
-    vector<double> y_cor = random_num_gen(count, seed, range);
+    int precision = 10000;
+    vector<int> x_cor = random_num_gen(count, seed);
+    vector<int> y_cor = random_num_gen(count, seed);
 
     int count_inside_circle = 0;
     pair<double, double> circle_center = make_pair(0, 0);
     for(int i=0;i<count;i++)
     {
-        pair<double, double> random_pt = make_pair(x_cor[i], y_cor[i]);
+        double x = convert_to_range(x_cor[i], range, precision);
+        double y = convert_to_range(y_cor[i], range, precision);
+        pair<double, double> random_pt = make_pair(x, y);
         double dist = get_dist(circle_center, random_pt);
         if(dist <= 1)
             count_inside_circle++;

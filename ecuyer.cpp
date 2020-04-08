@@ -93,7 +93,7 @@ vector<vector<long long>> Ecuyer :: get_power(vector<vector<long long>> mat, int
 	return ans;
 }
 
-vector<double> Ecuyer :: generate_random_numbers(int count, int seed, pair<int, int> range)
+vector<int> Ecuyer :: generate_random_numbers(int count, int seed)
 {
     y10[0] = seed % m1;
 	vector<double> random_numbers;
@@ -109,9 +109,6 @@ vector<double> Ecuyer :: generate_random_numbers(int count, int seed, pair<int, 
 		cur_y1 = vec_mult(A1, cur_y1, m1);
 		cur_y2 = vec_mult(A2, cur_y2, m2);
 		long long random_no = (cur_y1[0] + cur_y2[0] + 2 * m1) % m1;
-		int modulus = 1 + decimal_factor*(range.second-range.first);
-		random_no = (random_no % modulus) + (decimal_factor*range.first);
-		double no = (double)random_no / decimal_factor;
 		random_numbers.push_back(no);
 	}
 
