@@ -5,10 +5,10 @@ Ecuyer :: Ecuyer(int number_of_processes)
 	num_procs = number_of_processes;	
 }
 
-vector<int> Ecuyer :: generate_random_numbers(int count, int seed, pair<int, int> range)
+vector<double> Ecuyer :: generate_random_numbers(int count, int seed, pair<int, int> range)
 {
 	cout<<"Ecuyer"<<endl;
     y10[0] = seed % m1;
-	vector<int> tmp;
+	vector<double> tmp;
 	return tmp;
 }
