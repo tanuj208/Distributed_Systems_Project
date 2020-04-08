@@ -16,13 +16,14 @@ private:
     vector<vector<long long>> A2 { {a21, 0, a23}, {1, 0, 0}, {0, 1, 0} };
     vector<long long> y10 {1, 1, 1};
     vector<long long> y20 {1, 1, 1};
-public:
-	int num_procs;
-	Ecuyer(int number_of_processes);
+
     vector<vector<long long>> mult(vector<vector<long long>> mat1, vector<vector<long long>> mat2, long long mod);
     vector<long long> vec_mult(vector<vector<long long>> mat, vector<long long> vec, long long mod);
     vector<vector<long long>> get_identity(int dim);
     vector<vector<long long>> get_power(vector<vector<long long>> mat, int exp, long long mod);
+public:
+	int num_procs;
+	Ecuyer(int number_of_processes);
 	vector<double> generate_random_numbers(int count, int seed, pair<int, int> range);
 };
 

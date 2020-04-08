@@ -103,19 +103,21 @@ vector<double> Ecuyer :: generate_random_numbers(int count, int seed, pair<int, 
 	vector<vector<long long>> cur_mat2 = A2;
 	vector<long long> cur_y1 = y10;
 	vector<long long> cur_y2 = y20;
+	int decimal_factor = 10000;
 	for(i=0;i<count;i++)
 	{
 		cur_y1 = vec_mult(A1, cur_y1, m1);
 		cur_y2 = vec_mult(A2, cur_y2, m2);
 		long long random_no = (cur_y1[0] + cur_y2[0] + 2 * m1) % m1;
-		double no = (double)random_no / (m1-1);
-		no = (range.second - range.first) * no + range.first;
+		int modulus = 1 + decimal_factor*(range.second-range.first);
+		random_no = (random_no % modulus) + (decimal_factor*range.first);
+		double no = (double)random_no / decimal_factor;
 		random_numbers.push_back(no);
 	}
 
-	for(i=0;i<random_numbers.size();i++)
-		cout<<random_numbers[i]<<" ";
-	cout<<endl;
+	// for(i=0;i<random_numbers.size();i++)
+	// 	cout<<random_numbers[i]<<" ";
+	// cout<<endl;
 
 	return random_numbers;
 }
