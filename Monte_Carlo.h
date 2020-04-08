@@ -6,9 +6,9 @@
 class Monte_Carlo
 {
 private:
-	function < vector<double> (int, int, pair<int, int>) > random_num_gen;
+	function < vector<int> (int, int) > random_num_gen;
 public:
-	Monte_Carlo(function < vector<double> (int, int, pair<int, int>) >);
+	Monte_Carlo(function < vector<int> (int, int) >);
 	double generate_pi();
 };
 

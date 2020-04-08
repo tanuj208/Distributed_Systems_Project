@@ -27,27 +27,27 @@ int main( int argc, char **argv ) {
     int x;
     cin>>x;
 
-    function < vector<double> (int, int, pair<int, int>) > generate_random_numbers;
+    function < vector<int> (int, int) > generate_random_numbers;
 
     if(x == 0)
     {
         LCG_Parallel1 rcg(numprocs);
-        generate_random_numbers = bind(&LCG_Parallel1::generate_random_numbers, rcg, _1, _2, _3);
+        generate_random_numbers = bind(&LCG_Parallel1::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 1)
     {
         LCG_Parallel2 rcg(numprocs);
-        generate_random_numbers = bind(&LCG_Parallel2::generate_random_numbers, rcg, _1, _2, _3);
+        generate_random_numbers = bind(&LCG_Parallel2::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 2)
     {
         LCG_Parallel3 rcg(numprocs);
-        generate_random_numbers = bind(&LCG_Parallel3::generate_random_numbers, rcg, _1, _2, _3);
+        generate_random_numbers = bind(&LCG_Parallel3::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 3)
     {
         Ecuyer rcg(numprocs);
-        generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2, _3);
+        generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2);
     }
 
     Monte_Carlo m(generate_random_numbers);

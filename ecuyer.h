@@ -19,7 +19,7 @@ private:
 public:
 	int num_procs;
 	Ecuyer(int number_of_processes);
-	vector<double> generate_random_numbers(int count, int seed, pair<int, int> range);
+	vector<int> generate_random_numbers(int count, int seed);
 };
 
 #endif
