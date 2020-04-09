@@ -17,15 +17,22 @@ int main( int argc, char **argv ) {
 
     /* write your code here */
     
-
-    cout<<"Enter index of random number generator you want to use\n";
-    cout<<"0. LCG Parallel - Idea 1\n";
-    cout<<"1. LCG Parallel - Idea 2\n";
-    cout<<"2. LCG Parallel - Idea 3\n";
-    cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
-    
     int x;
-    cin>>x;
+    if(rank == root_process)
+    {
+        cout<<"Enter index of random number generator you want to use\n";
+        cout<<"0. LCG Parallel - Idea 1\n";
+        cout<<"1. LCG Parallel - Idea 2\n";
+        cout<<"2. LCG Parallel - Idea 3\n";
+        cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
+        cin>>x;
+        MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+    }
+    else
+    {
+        MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+    }
+    MPI_Barrier( MPI_COMM_WORLD );
 
     function < vector<long long> (int, int) > generate_random_numbers;
 
@@ -50,7 +57,7 @@ int main( int argc, char **argv ) {
         generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2);
     }
 
-    Monte_Carlo m(generate_random_numbers);
+    Monte_Carlo m(numprocs, generate_random_numbers);
     cout<<m.generate_pi()<<endl;
 
     MPI_Barrier( MPI_COMM_WORLD );

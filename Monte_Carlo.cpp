@@ -1,7 +1,8 @@
 #include "headers.h"
 
-Monte_Carlo :: Monte_Carlo(function<vector<long long> (int, int)> generate_random_numbers)
+Monte_Carlo :: Monte_Carlo(int number_of_processes, function<vector<long long> (int, int)> generate_random_numbers)
 {
+    num_procs = number_of_processes;
     random_num_gen = generate_random_numbers;
 }
 double Monte_Carlo :: get_dist(pair<double, double> pt1, pair<double, double> pt2)
