@@ -13,7 +13,6 @@ int main( int argc, char **argv ) {
     
     /*synchronize all processes*/
     MPI_Barrier( MPI_COMM_WORLD );
-    double tbeg = MPI_Wtime();
 
     /* write your code here */
     
@@ -26,11 +25,11 @@ int main( int argc, char **argv ) {
         cout<<"2. LCG Parallel - Idea 3\n";
         cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
         cin>>x;
-    	MPI_Bcast(&x, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD); // total number of vertices    	
+        MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
     }
     else
-    	MPI_Bcast(&x, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD); // total number of vertices    	
-    
+        MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+    double tbeg = MPI_Wtime();
 
     function < vector<long long> (int, int) > generate_random_numbers;
 
@@ -56,7 +55,10 @@ int main( int argc, char **argv ) {
     }
 
     Monte_Carlo m(numprocs, rank, generate_random_numbers);
-    cout<<m.generate_pi()<<endl;
+    double pi = m.generate_pi();
+
+    if(rank == root_process)
+        cout<<pi<<endl;
 
     MPI_Barrier( MPI_COMM_WORLD );
     double elapsedTime = MPI_Wtime() - tbeg;

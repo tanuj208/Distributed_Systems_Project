@@ -7,8 +7,67 @@ Monte_Carlo :: Monte_Carlo(int number_of_processes, int rank, function<vector<lo
     prank = rank;
 }
 
+double Monte_Carlo :: get_dist(pair<double, double> pt1, pair<double, double> pt2)
+{
+    double x_dist = pt1.first - pt2.first;
+    double y_dist = pt1.second - pt2.second;
+    double dist = x_dist * x_dist + y_dist * y_dist;
+    return sqrt(dist);
+}
+
+double Monte_Carlo :: convert_to_range(long long number, pair<int, int> range, int precision)
+{
+    int mod = precision * (range.second - range.first) + 1;
+    number = (number % mod) + (precision * range.first);
+    return (double)number / (double)precision;
+}
+
 double Monte_Carlo :: generate_pi()
 {
-    vector<long long> tmp = random_num_gen(5, 7);
-    return 3.14;
+    pair<int, int> range = make_pair(-1,1);
+    int seed = 7;
+    int count = 100000;
+    int precision = 100000;
+    vector<long long> pts = random_num_gen(2*count, seed);
+    pair<double, double> circle_center = make_pair(0, 0);
+
+    int count_inside_circle = 0;
+    int total_cnt = pts.size() / 2;
+    for(int i=0;i<total_cnt;i+=2)
+    {
+        double x = convert_to_range(pts[i], range, precision);
+        double y = convert_to_range(pts[i+1], range, precision);
+        pair<double, double> random_pt = make_pair(x, y);
+        double dist = get_dist(circle_center, random_pt);
+        if(dist <= 1)
+            count_inside_circle++;
+    }
+
+    double pi;
+    if(prank == root_process)
+    {
+        int total_coors = total_cnt/2;
+        int inside_circle = count_inside_circle;
+        MPI_Status status;
+
+        for(int pid=1 ; pid<num_procs ; pid++)
+        {
+            int tot;
+            int inside;
+            MPI_Recv(&tot, 1, MPI_INT, pid, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+            MPI_Recv(&inside, 1, MPI_INT, pid, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+            total_coors += tot/2;
+            inside_circle += inside;
+        }
+        pi = 4 * (double)inside_circle / (double)total_coors;
+        MPI_Bcast(&pi, 1, MPI_DOUBLE, root_process, MPI_COMM_WORLD);
+    }
+    else
+    {
+        MPI_Send(&total_cnt, 1, MPI_INT, root_process, send_data_tag, MPI_COMM_WORLD);
+        MPI_Send(&count_inside_circle, 1, MPI_INT, root_process, send_data_tag, MPI_COMM_WORLD);
+        MPI_Bcast(&pi, 1, MPI_DOUBLE, root_process, MPI_COMM_WORLD);
+    }
+
+    return pi;
 }

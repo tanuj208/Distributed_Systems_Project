@@ -2,7 +2,7 @@
 
 LCG_Parallel3 :: LCG_Parallel3(int number_of_processes, int rank)
 {
-	num_procs = number_of_processes;	
+	num_procs = number_of_processes;
 	prank = rank;
 }
 
