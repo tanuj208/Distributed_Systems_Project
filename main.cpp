@@ -13,7 +13,6 @@ int main( int argc, char **argv ) {
     
     /*synchronize all processes*/
     MPI_Barrier( MPI_COMM_WORLD );
-    double tbeg = MPI_Wtime();
 
     /* write your code here */
     
@@ -32,6 +31,7 @@ int main( int argc, char **argv ) {
     {
         MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
     }
+    double tbeg = MPI_Wtime();
     MPI_Barrier( MPI_COMM_WORLD );
 
     function < vector<long long> (int, int) > generate_random_numbers;
@@ -57,8 +57,11 @@ int main( int argc, char **argv ) {
         generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2);
     }
 
-    Monte_Carlo m(numprocs, generate_random_numbers);
-    cout<<m.generate_pi()<<endl;
+    Monte_Carlo m(numprocs, rank, generate_random_numbers);
+    double pi = m.generate_pi();
+
+    if(rank == root_process)
+        cout<<pi<<endl;
 
     MPI_Barrier( MPI_COMM_WORLD );
     double elapsedTime = MPI_Wtime() - tbeg;

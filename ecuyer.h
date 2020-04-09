@@ -23,7 +23,9 @@ private:
     vector<long long> vec_mult(vector<vector<long long>> mat, vector<long long> vec, long long mod);
     vector<vector<long long>> get_identity(int dim);
     vector<vector<long long>> get_power(vector<vector<long long>> mat, int exp, long long mod);
-    pair<int, int> distribute_task(int total_work, int num_procs); // <Base task to everybody, number of processes doing 1 task more>
+    int distribute_task(int total_work); // <Base task to everybody, number of processes doing 1 task more>
+    vector<long long> generate_nums(int count, int start_power, int step_size);
+
 public:
 	Ecuyer(int number_of_processes, int rank);
 	vector<long long> generate_random_numbers(int count, int seed);

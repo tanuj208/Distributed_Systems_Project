@@ -94,35 +94,46 @@ vector<vector<long long>> Ecuyer :: get_power(vector<vector<long long>> mat, int
 	return ans;
 }
 
-pair<int,int> Ecuyer :: distribute_task(int total_work, int num_procs)
+int Ecuyer :: distribute_task(int total_work)
 {
 	int base_task = total_work / num_procs;
 	int more_work_proc = total_work - base_task * num_procs;
-	return make_pair(base_task, more_work_proc);
+	int nums_to_gen = base_task;
+
+	if(prank < more_work_proc)
+		nums_to_gen ++;
+
+	return nums_to_gen;
 }
 
+vector<long long> Ecuyer :: generate_nums(int count, int start_power, int step_size)
+{
+	vector<vector<long long>> A1_init = get_power(A1, start_power, m1);
+	vector<vector<long long>> A2_init = get_power(A2, start_power, m2);
+
+	vector<vector<long long>> A1P = get_power(A1, step_size, m1);
+	vector<vector<long long>> A2P = get_power(A2, step_size, m2);
+
+	vector<long long> cur_y1 = vec_mult(A1_init, y10, m1);
+	vector<long long> cur_y2 = vec_mult(A2_init, y20, m2);
+
+	int i;
+	vector<long long> numbers;
+	for(i=0;i<count;i++)
+	{
+		long long random_no = (cur_y1[0] + cur_y2[0] + 2*m1)%m1;
+		numbers.push_back(random_no);
+
+		cur_y1 = vec_mult(A1P, cur_y1, m1);
+		cur_y2 = vec_mult(A2P, cur_y2, m2);
+	}
+	return numbers;
+}
 
 vector<long long> Ecuyer :: generate_random_numbers(int count, int seed)
 {
     y10[0] = seed % m1;
-	vector<long long> random_numbers;
-
-	int i;
-	vector<vector<long long>> cur_mat1 = A1;
-	vector<vector<long long>> cur_mat2 = A2;
-	vector<long long> cur_y1 = y10;
-	vector<long long> cur_y2 = y20;
-	for(i=0;i<count;i++)
-	{
-		cur_y1 = vec_mult(A1, cur_y1, m1);
-		cur_y2 = vec_mult(A2, cur_y2, m2);
-		long long random_no = (cur_y1[0] + cur_y2[0] + 2 * m1) % m1;
-		random_numbers.push_back(random_no);
-	}
-
-	// for(i=0;i<random_numbers.size();i++)
-	// 	cout<<random_numbers[i]<<" ";
-	// cout<<endl;
-
-	return random_numbers;
+	int nums_to_gen = distribute_task(count);
+	vector<long long> random_nums = generate_nums(nums_to_gen, prank + 1, num_procs);
+	return random_nums;
 }

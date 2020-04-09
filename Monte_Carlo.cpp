@@ -1,9 +1,10 @@
 #include "headers.h"
 
-Monte_Carlo :: Monte_Carlo(int number_of_processes, function<vector<long long> (int, int)> generate_random_numbers)
+Monte_Carlo :: Monte_Carlo(int number_of_processes, int rank, function<vector<long long> (int, int)> generate_random_numbers)
 {
     num_procs = number_of_processes;
     random_num_gen = generate_random_numbers;
+    prank = rank;
 }
 double Monte_Carlo :: get_dist(pair<double, double> pt1, pair<double, double> pt2)
 {
@@ -30,7 +31,8 @@ double Monte_Carlo :: generate_pi()
     pair<double, double> circle_center = make_pair(0, 0);
 
     int count_inside_circle = 0;
-    for(int i=0;i<2*count;i+=2)
+    int total_cnt = pts.size() / 2;
+    for(int i=0;i<total_cnt;i+=2)
     {
         double x = convert_to_range(pts[i], range, precision);
         double y = convert_to_range(pts[i+1], range, precision);
@@ -39,23 +41,32 @@ double Monte_Carlo :: generate_pi()
         if(dist <= 1)
             count_inside_circle++;
     }
-    cout<<count_inside_circle<<endl;
-    double pi = 4 * (double)count_inside_circle / (double)count;
 
-    // srand(seed);
-    // int cnt2=0;
-    // for(int i=0;i<count;i++)
-    // {
-    //     double x = rand() % 20001;
-    //     x -= 10000;
-    //     x/=10000;
-    //     double y = rand() % 20001;
-    //     y -= 10000;
-    //     y/=10000;
-    //     pair<double, double> tmp = make_pair(x, y);
-    //     if(get_dist(circle_center, tmp) <= 1)
-    //     cnt2++;
-    // }
-    // cout<<cnt2<<" "<<4*(double)cnt2 / (double) count<<endl;
+    double pi;
+    if(prank == root_process)
+    {
+        int total_coors = total_cnt/2;
+        int inside_circle = count_inside_circle;
+        MPI_Status status;
+
+        for(int pid=1 ; pid<num_procs ; pid++)
+        {
+            int tot;
+            int inside;
+            MPI_Recv(&tot, 1, MPI_INT, pid, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+            MPI_Recv(&inside, 1, MPI_INT, pid, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+            total_coors += tot/2;
+            inside_circle += inside;
+        }
+        pi = 4 * (double)inside_circle / (double)total_coors;
+        MPI_Bcast(&pi, 1, MPI_DOUBLE, root_process, MPI_COMM_WORLD);
+    }
+    else
+    {
+        MPI_Send(&total_cnt, 1, MPI_INT, root_process, send_data_tag, MPI_COMM_WORLD);
+        MPI_Send(&count_inside_circle, 1, MPI_INT, root_process, send_data_tag, MPI_COMM_WORLD);
+        MPI_Bcast(&pi, 1, MPI_DOUBLE, root_process, MPI_COMM_WORLD);
+    }
+
     return pi;
 }
