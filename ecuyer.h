@@ -12,13 +12,14 @@ private:
     int a23 = -1370589;
     int m1 = 4294967087;
     int m2 = 4294944443;
+	int num_procs;
+    int prank;
     vector<vector<int>> A1 { {0, a12, a13}, {1, 0, 0}, {0, 1, 0} };
     vector<vector<int>> A2 { {a21, 0, a23}, {1, 0, 0}, {0, 1, 0} };
     vector<int> y10 {1, 1, 1};
     vector<int> y20 {1, 1, 1};
 public:
-	int num_procs;
-	Ecuyer(int number_of_processes);
+	Ecuyer(int number_of_processes, int rank);
 	vector<long long> generate_random_numbers(int count, int seed);
 };
 

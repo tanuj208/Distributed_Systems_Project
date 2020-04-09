@@ -1,8 +1,9 @@
 #include "headers.h"
 
-Ecuyer :: Ecuyer(int number_of_processes)
+Ecuyer :: Ecuyer(int number_of_processes, int rank)
 {
-	num_procs = number_of_processes;	
+	num_procs = number_of_processes;
+	prank = rank;
 }
 
 vector<long long> Ecuyer :: generate_random_numbers(int count, int seed)
