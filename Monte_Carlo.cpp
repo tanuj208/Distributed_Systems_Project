@@ -6,6 +6,7 @@ Monte_Carlo :: Monte_Carlo(int number_of_processes, int rank, function<vector<lo
     random_num_gen = generate_random_numbers;
     prank = rank;
 }
+
 double Monte_Carlo :: get_dist(pair<double, double> pt1, pair<double, double> pt2)
 {
     double x_dist = pt1.first - pt2.first;

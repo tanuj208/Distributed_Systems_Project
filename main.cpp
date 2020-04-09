@@ -28,11 +28,8 @@ int main( int argc, char **argv ) {
         MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
     }
     else
-    {
         MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
-    }
     double tbeg = MPI_Wtime();
-    MPI_Barrier( MPI_COMM_WORLD );
 
     function < vector<long long> (int, int) > generate_random_numbers;
 
