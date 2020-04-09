@@ -12,9 +12,10 @@ void print_mat(vector<vector<long long>> mat)
 	return;
 }
 
-Ecuyer :: Ecuyer(int number_of_processes)
+Ecuyer :: Ecuyer(int number_of_processes, int rank)
 {
-	num_procs = number_of_processes;	
+	num_procs = number_of_processes;
+	prank = rank;
 }
 
 vector<vector<long long>> Ecuyer ::  mult(vector<vector<long long>> mat1, vector<vector<long long>> mat2, long long mod)
@@ -93,6 +94,14 @@ vector<vector<long long>> Ecuyer :: get_power(vector<vector<long long>> mat, int
 	return ans;
 }
 
+pair<int,int> Ecuyer :: distribute_task(int total_work, int num_procs)
+{
+	int base_task = total_work / num_procs;
+	int more_work_proc = total_work - base_task * num_procs;
+	return make_pair(base_task, more_work_proc);
+}
+
+
 vector<long long> Ecuyer :: generate_random_numbers(int count, int seed)
 {
     y10[0] = seed % m1;
@@ -103,7 +112,6 @@ vector<long long> Ecuyer :: generate_random_numbers(int count, int seed)
 	vector<vector<long long>> cur_mat2 = A2;
 	vector<long long> cur_y1 = y10;
 	vector<long long> cur_y2 = y20;
-	int decimal_factor = 10000;
 	for(i=0;i<count;i++)
 	{
 		cur_y1 = vec_mult(A1, cur_y1, m1);

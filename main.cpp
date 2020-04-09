@@ -38,22 +38,22 @@ int main( int argc, char **argv ) {
 
     if(x == 0)
     {
-        LCG_Parallel1 rcg(numprocs);
+        LCG_Parallel1 rcg(numprocs, rank);
         generate_random_numbers = bind(&LCG_Parallel1::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 1)
     {
-        LCG_Parallel2 rcg(numprocs);
+        LCG_Parallel2 rcg(numprocs, rank);
         generate_random_numbers = bind(&LCG_Parallel2::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 2)
     {
-        LCG_Parallel3 rcg(numprocs);
+        LCG_Parallel3 rcg(numprocs, rank);
         generate_random_numbers = bind(&LCG_Parallel3::generate_random_numbers, rcg, _1, _2);
     }
     else if(x == 3)
     {
-        Ecuyer rcg(numprocs);
+        Ecuyer rcg(numprocs, rank);
         generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2);
     }
 
