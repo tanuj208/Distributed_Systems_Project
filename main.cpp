@@ -55,7 +55,7 @@ int main( int argc, char **argv ) {
         generate_random_numbers = bind(&Ecuyer::generate_random_numbers, rcg, _1, _2);
     }
 
-    Monte_Carlo m(generate_random_numbers);
+    Monte_Carlo m(numprocs, rank, generate_random_numbers);
     cout<<m.generate_pi()<<endl;
 
     MPI_Barrier( MPI_COMM_WORLD );
