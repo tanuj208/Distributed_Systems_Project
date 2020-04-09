@@ -17,15 +17,20 @@ int main( int argc, char **argv ) {
 
     /* write your code here */
     
-
-    cout<<"Enter index of random number generator you want to use\n";
-    cout<<"0. LCG Parallel - Idea 1\n";
-    cout<<"1. LCG Parallel - Idea 2\n";
-    cout<<"2. LCG Parallel - Idea 3\n";
-    cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
-    
     int x;
-    cin>>x;
+    if(rank == root_process)
+    {
+        cout<<"Enter index of random number generator you want to use\n";
+        cout<<"0. LCG Parallel - Idea 1\n";
+        cout<<"1. LCG Parallel - Idea 2\n";
+        cout<<"2. LCG Parallel - Idea 3\n";
+        cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
+        cin>>x;
+    	MPI_Bcast(&x, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD); // total number of vertices    	
+    }
+    else
+    	MPI_Bcast(&x, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD); // total number of vertices    	
+    
 
     function < vector<long long> (int, int) > generate_random_numbers;
 
