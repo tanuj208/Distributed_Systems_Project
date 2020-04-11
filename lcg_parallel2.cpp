@@ -8,7 +8,6 @@ LCG_Parallel2 :: LCG_Parallel2(int number_of_processes, int rank)
 
 vector<long long> LCG_Parallel2 :: generate_random_numbers(int count, int seed)
 {
-	cout<<"Method 2"<<endl;
 	vector<long long> tmp;
 	long long start;
 	int n = count/num_procs;
