@@ -5,7 +5,7 @@
 
 class LCG
 {
-private:
+protected:
 	int mod = 2147483647;
 	int a = 2147483629;
 	int b = 2147483587;
