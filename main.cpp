@@ -17,6 +17,8 @@ int main( int argc, char **argv ) {
     /* write your code here */
     
     int x;
+    int y;
+    long long seed;
     if(rank == root_process)
     {
         cout<<"Enter index of random number generator you want to use\n";
@@ -25,10 +27,22 @@ int main( int argc, char **argv ) {
         cout<<"2. LCG Parallel - Idea 3\n";
         cout<<"3. Ecuyer’s Multiple Recursive Generator\n";
         cin>>x;
+        cout<<"Choose the monte carlo simulation\n";
+        cout<<"0. Approximate value of pi\n";
+        cout<<"1. Monte Carlo Integration\n";
+        cin>>y;
+        cout<<"Choose the value of seed\n";
+        cin>>seed;
         MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+        MPI_Bcast(&y, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+        MPI_Bcast(&seed, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD);
     }
     else
+    {
         MPI_Bcast(&x, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+        MPI_Bcast(&y, 1, MPI_INT, root_process, MPI_COMM_WORLD);
+        MPI_Bcast(&seed, 1, MPI_LONG_LONG, root_process, MPI_COMM_WORLD);
+    }
     double tbeg = MPI_Wtime();
 
     function < vector<long long> (int, int) > generate_random_numbers;
@@ -55,10 +69,19 @@ int main( int argc, char **argv ) {
     }
 
     Monte_Carlo m(numprocs, rank, generate_random_numbers);
-    double pi = m.generate_pi();
 
-    if(rank == root_process)
-        cout<<pi<<endl;
+    if(y == 0)
+    {
+        double pi = m.generate_pi();
+        if(rank == root_process)
+           cout<<"Approximate value of pi is "<<pi<<endl;
+    }
+    else
+    {
+        double integral_val = m.integration();
+        if(rank == root_process)
+           cout<<"Approximate value of the integral is "<<integral_val<<endl;
+    }
 
     MPI_Barrier( MPI_COMM_WORLD );
     double elapsedTime = MPI_Wtime() - tbeg;
