@@ -12,7 +12,7 @@ protected:
 public:
 	vector<long long> generate_random_numbers(int count, int seed);
 	long long mod_mult(long long a,long long b,long long mod);
-	long long mult(long long x,long long y,long long m);
+	long long power(long long x,long long y,long long m);
 	long long inv_mod(long long x,long long y,long long m);
 };
 
