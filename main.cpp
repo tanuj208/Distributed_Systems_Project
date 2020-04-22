@@ -72,13 +72,13 @@ int main( int argc, char **argv ) {
 
     if(y == 0)
     {
-        double pi = m.generate_pi();
+        double pi = m.generate_pi(seed);
         if(rank == root_process)
            cout<<"Approximate value of pi is "<<pi<<endl;
     }
     else
     {
-        double integral_val = m.integration();
+        double integral_val = m.integration(seed);
         if(rank == root_process)
            cout<<"Approximate value of the integral is "<<integral_val<<endl;
     }

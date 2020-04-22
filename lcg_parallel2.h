@@ -10,7 +10,7 @@ private:
 	int prank;
 public:
 	LCG_Parallel2(int number_of_processes, int rank);
-	vector<long long> generate_random_numbers(int count, int seed);
+	vector<long long> generate_random_numbers(int count, long long seed);
 };
 
 #endif

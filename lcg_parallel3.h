@@ -15,7 +15,7 @@ private:
 	int distribute_task(int total_work);
 public:
 	LCG_Parallel3(int number_of_processes, int rank);
-	vector<long long> generate_random_numbers(int count, int seed);
+	vector<long long> generate_random_numbers(int count, long long seed);
 };
 
 #endif

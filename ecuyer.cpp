@@ -130,7 +130,7 @@ vector<long long> Ecuyer :: generate_nums(int count, int start_power, int step_s
 	return numbers;
 }
 
-vector<long long> Ecuyer :: generate_random_numbers(int count, int seed)
+vector<long long> Ecuyer :: generate_random_numbers(int count, long long seed)
 {
     y10[0] = seed % m1;
 	int nums_to_gen = distribute_task(count);

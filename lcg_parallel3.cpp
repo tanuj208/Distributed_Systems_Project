@@ -39,7 +39,7 @@ vector<long long> LCG_Parallel3 :: gen_nums(int seed, int cnt)
 	return random_nums;
 }
 
-vector<long long> LCG_Parallel3 :: generate_random_numbers(int count, int seed)
+vector<long long> LCG_Parallel3 :: generate_random_numbers(int count, long long seed)
 {
 	long long new_seed = get_pth_random_no(prank+1, seed);
 	int nums_to_gen = distribute_task(count);

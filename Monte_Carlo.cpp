@@ -28,10 +28,9 @@ double func(double x)
     return exp(-power);
 }
 
-double Monte_Carlo :: integration()
+double Monte_Carlo :: integration(long long seed)
 {
     pair<int, int> range = make_pair(0, 1);
-    int seed = 7;
     int count = 100000;
     int precision = 100000;
     vector<long long> random_pts = random_num_gen(count, seed);
@@ -65,10 +64,9 @@ double Monte_Carlo :: integration()
     return expected_val;
 }
 
-double Monte_Carlo :: generate_pi()
+double Monte_Carlo :: generate_pi(long long seed)
 {
     pair<int, int> range = make_pair(-1,1);
-    int seed = 7;
     int count = 100000;
     int precision = 100000;
     vector<long long> pts = random_num_gen(2*count, seed);

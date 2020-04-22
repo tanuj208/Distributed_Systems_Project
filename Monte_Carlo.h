@@ -13,8 +13,8 @@ private:
 	int prank;
 public:
 	Monte_Carlo(int number_of_processes, int rank, function < vector<long long> (int, int) >);
-	double integration();
-	double generate_pi();
+	double integration(long long seed);
+	double generate_pi(long long seed);
 };
 
 #endif

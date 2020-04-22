@@ -28,7 +28,7 @@ private:
 
 public:
 	Ecuyer(int number_of_processes, int rank);
-	vector<long long> generate_random_numbers(int count, int seed);
+	vector<long long> generate_random_numbers(int count, long long seed);
 };
 
 #endif
